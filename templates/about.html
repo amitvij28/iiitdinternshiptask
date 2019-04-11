@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{%block container%}
+    <h1>About</h1>
+    <form action="{{ url_for('gettingdata') }}" method="post">
+        <input type="text" name="val" id="val">
+        <input type="submit" value="Find Route">
+    </form>
+
+{% endblock container%}

@@ -1,6 +1,6 @@
 import os
 
-#read stops.txt for dropdown data
+#read stops.txt to get a list of all stops
 def readStops():
     f  = open('./data/stops.txt','r')
     stopslist = []
@@ -15,6 +15,7 @@ def readStops():
     f.close()
     return stopslist
 
+#reads stop_times.txt to get all the trips and the stops in them
 def readStopTimes():
     f = open('./data/stop_times.txt','r')
     trips = []
@@ -36,6 +37,7 @@ def readStopTimes():
     
     return trips
 
+#reads trips.txt to match trips to routes
 def readTrips():
     f=open('./data/trips.txt','r')
     trips = []

@@ -1,8 +1,8 @@
 from utils import readStops,readStopTimes,readTrips
-import sys
 
-
-
+#Function to get zero and one hop routes
+#Parameters: sp = starting point/stop, ep = ending point/stop
+# Return Type: A dictionary containing a list of all zero and one hop routes possible 
 def findroutes(sp,ep):
     stops= readStops()
     stoptrips = readStopTimes()
@@ -21,8 +21,7 @@ def findroutes(sp,ep):
     routes={
         'zero':[],
         'one':[]
-    }
-    
+    } 
     
     listofstopsfromstart = getStartTrips(start,stoptrips,triplist,routelist)
     listofstopstoend = getEndTrips(end,stoptrips,triplist,routelist)
@@ -35,13 +34,11 @@ def findroutes(sp,ep):
                 for l in listofstopstoend.keys():
                     if sts in listofstopstoend[l]:
                         routes['one'].append({'first':key,'jump':sts,'second':l})
-
-    print(routes['one'])
-
-
     return routes
 
-
+#Function to get all the stops one can reach from the starting point
+#Parameters: stop=Starting point/stop, trips=data from shop_times.txt, triplist=list of trips from trips.txt, routelist= list of routes from trips.txt
+#Return: A dictionary which contains the route and all the stops possible to reach in that route
 def getStartTrips(stop,trips,triplist,routelist):
     tripids= dict()
     for t in trips:
@@ -49,10 +46,10 @@ def getStartTrips(stop,trips,triplist,routelist):
             r=routelist[int(triplist[int(t['trip_id'])])]
             lst=t['stop_id'][t['stop_id'].index(stop)+1:]
             tripids[r]=lst
-                
-
     return tripids
-
+#Function to get all the stops one can start from to reach the ending point
+#Parameters: stop=Ending point/stop, trips=data from shop_times.txt, triplist=list of trips from trips.txt, routelist= list of routes from trips.txt
+#Return: A dictionary which contains the route and all the stops possible in that route
 def getEndTrips(stop,trips,triplist,routelist):
     tripids= dict()
     for t in trips:

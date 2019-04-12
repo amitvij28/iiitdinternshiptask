@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {%block container%}
-    <h1>Home</h1>
+    <h1>Welcome</h1>
     <form action="{{url_for('index')}}" method="POST">
         Starting Point:
         <select name="StartPoint" id="StartPoint">
@@ -20,11 +20,12 @@
     </form>
 
     <hr>
+    {% if flag%}
     <h1>Trip From {{sp}} to {{ep}}</h1>
     <h2>Zero Hop Routes:</h2>
     {% if routes0|length >0 %}
     {% for r in routes0%}
-    <p>Take route {{r}}</p>
+    <p>Take route:{{r}}</p>
     {% endfor %}
     {%else%}
     <p>No zero hop routes  available</p>
@@ -32,10 +33,11 @@
     <h2>One Hop Routes</h2>
     {% if routes1|length >0 %}
     {% for r in routes1%}
-    <p>Take route {{r['first']}}, get down at {{r['jump']}} and take route {{r['second']}}  </p>
+    <p>Take route:{{r['first']}}, get down at stop:{{r['jump']}} and take route:{{r['second']}}  </p>
     
     {% endfor %}
     {%else%}
     <p>No one hop routes available</p>
     {% endif %}
+    {%endif%}
 {% endblock container%}

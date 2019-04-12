@@ -1,44 +1,37 @@
 from flask import Flask, render_template,request,redirect
 import sys
 from utils import readStops
-from findroutes import workondata
+from findroutes import findroutes
 
 app = Flask(__name__)
 
+#Get the name of stops available for th dropdown menu
 data=readStops()
 stoplist = [x['stop_name'] for x in data ]
 
-@app.route('/')
+#Home Page with all the functionality
+@app.route('/',methods = ['GET','POST'])
 def index():
-    
-    return render_template('home.html',data=stoplist)
-
-@app.route('/gettingdata',methods = ['GET','POST'])
-def gettingdata():
-    routes=[]
+    routes={
+        'zero':[],
+        'one':[]
+    }
+    sp=""
+    ep=""
+    flag=True
     if request.method=='POST':
         sp = request.form['StartPoint']
         ep = request.form['EndPoint']
-        routes= workondata(sp,ep)
+        routes= findroutes(sp,ep)
+    if sp=="" and ep=="":
+        flag=False
+    return render_template('home.html',data=stoplist,routes0=routes['zero'],routes1=routes['one'],sp=sp,ep=ep,flag=flag)
 
-        #print(f'Starting Point = {sp}\nEnding Point = {ep}',file=sys.stdout)
-
-    return render_template('home.html',data=stoplist,routes=routes)   
-
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-
+#Error Page
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html')
 
 
-
-
-
 if __name__ == "__main__":
-    
     app.run(debug=True)

@@ -19,4 +19,11 @@
         <input type="submit" value="Find Route">
     </form>
 
+    <hr>
+    <h2>Zero Hop Routes:</h2>
+    {% for r in routes%}
+    <p>{{r}}</p>
+    {% endfor %}
+
+
 {% endblock container%}

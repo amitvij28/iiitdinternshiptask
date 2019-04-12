@@ -1,23 +1,29 @@
 from flask import Flask, render_template,request,redirect
-
 import sys
+from utils import readStops
+from findroutes import workondata
 
 app = Flask(__name__)
 
+data=readStops()
+stoplist = [x['stop_name'] for x in data ]
 
 @app.route('/')
 def index():
-    data=['Delhi','Mumbai','Chennai']
-    return render_template('home.html',data=data)
+    
+    return render_template('home.html',data=stoplist)
 
 @app.route('/gettingdata',methods = ['GET','POST'])
 def gettingdata():
+    routes=[]
     if request.method=='POST':
         sp = request.form['StartPoint']
         ep = request.form['EndPoint']
-        print(sp+" "+ ep ,file=sys.stdout)
+        routes= workondata(sp,ep)
 
-    return redirect('/')    
+        #print(f'Starting Point = {sp}\nEnding Point = {ep}',file=sys.stdout)
+
+    return render_template('home.html',data=stoplist,routes=routes)   
 
 
 @app.route('/about')
@@ -34,4 +40,5 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
+    
     app.run(debug=True)

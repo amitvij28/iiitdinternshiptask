@@ -1,34 +1,40 @@
 from flask import Flask, render_template,request,redirect
 import sys
 from utils import readStops
-from findroutes import workondata
+from findroutes import findroutes
 
 app = Flask(__name__)
 
 data=readStops()
 stoplist = [x['stop_name'] for x in data ]
 
-@app.route('/')
+@app.route('/',methods = ['GET','POST'])
 def index():
-    
-    return render_template('home.html',data=stoplist)
-
-@app.route('/gettingdata',methods = ['GET','POST'])
-def gettingdata():
-    routes=[]
+    routes={
+        'zero':[],
+        'one':[]
+    }
     if request.method=='POST':
         sp = request.form['StartPoint']
         ep = request.form['EndPoint']
-        routes= workondata(sp,ep)
+        routes= findroutes(sp,ep)
+    
+    return render_template('home.html',data=stoplist,routes0=routes['zero'],routes1=routes['one'],sp=sp,ep=ep)
 
-        #print(f'Starting Point = {sp}\nEnding Point = {ep}',file=sys.stdout)
+# @app.route('/gettingdata')
+# def gettingdata():
+#     routes=[]
+#     if request.method=='POST':
+#         sp = request.form['StartPoint']
+#         ep = request.form['EndPoint']
+#         routes= findroutes(sp,ep)
+        
+#         #print(f'Starting Point = {sp}\nEnding Point = {ep}',file=sys.stdout)
 
-    return render_template('home.html',data=stoplist,routes=routes)   
+#     return render_template('home.html',data=stoplist,routes0=routes['zero'],routes1=routes['one'])   
 
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+
 
 
 @app.errorhandler(404)

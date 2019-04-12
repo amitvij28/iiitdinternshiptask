@@ -9,7 +9,7 @@ def readStops():
         line=line.split(',')
         stop={}
         stop['stop_id']=line[0]
-        stop['stp_code']=line[1]
+        stop['stop_code']=line[1]
         stop['stop_name']=line[2]
         stopslist.append(stop)
     f.close()
@@ -33,6 +33,7 @@ def readStopTimes():
             trip['stop_id'].append(values[3])
     f.close()
     del trips[0]
+    
     return trips
 
 def readTrips():

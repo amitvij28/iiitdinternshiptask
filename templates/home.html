@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{%block container%}
+    <h1>Home</h1>
+    <form action="{{url_for('gettingdata')}}" method="POST">
+        Starting Point:
+        <select name="StartPoint" id="StartPoint">
+            {%  for d in data  %}
+                <option value="{{ d}}">{{d}}</option>
+            {% endfor%}
+        </select><br>
+        Ending Point:
+        <select name="EndPoint" id="EndPoint">
+            {%  for d in data  %}
+                <option value="{{ d}}">{{d}}</option>
+            {% endfor%}
+        </select>
+
+
+        <input type="submit" value="Find Route">
+    </form>
+
+    <hr>
+    <h2>Zero Hop Routes:</h2>
+    {% for r in routes%}
+    <p>{{r}}</p>
+    {% endfor %}
+
+
+{% endblock container%}
